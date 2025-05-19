@@ -12,5 +12,24 @@ section .multiboot
     dd FLAGS
     dd CHECKSUM
 
+section .bss
+    align 16 ;x86 likes to align at 16 byte intervals
+    stack_bottom:
+    resb 16384 ; create a 16KiB stack
+    stack_top:
 
-.start
+section .text
+    global _start: function(_start.end - _start)
+
+;; the program
+_start:
+  mov esp, stack_top ; setup the stack
+  extern entryPoint ; load the function
+  call entryPointa
+
+  ; hang the system by clearing interrupts, and waiting for one to happen even though they never will
+  cli
+.hang:
+    hlt
+    jmp .hang
+.end:
