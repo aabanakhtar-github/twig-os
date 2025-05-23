@@ -17,6 +17,11 @@ void Terminal_putChar(Terminal* term, char c, TerminalColor fg_color, TerminalCo
         ++term->cursor_y;
     }
 
+    if (c == '\n') 
+    {
+        return; // don't print newlines 
+    }
+
     int location = term->cursor_y * TERMINAL_WIDTH + term->cursor_x;
     term->video_memory[location] = TERM_CHAR_COLOR_WORD(c, fg_color, bg_color);
 
