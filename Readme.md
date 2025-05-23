@@ -1,5 +1,5 @@
 ## Bubbletwig OS 
-A micro operating system in C++20.
+A micro operating system in C with some cool shell stuff.
 
 (coming soon, of course)j
 
