@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-inline void halt()
+inline void halt(void)
 {
     // hang forever
     for (;;)
