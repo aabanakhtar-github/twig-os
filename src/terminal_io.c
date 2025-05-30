@@ -10,24 +10,42 @@ void Terminal_init(Terminal* term)
 
 void Terminal_putChar(Terminal* term, char c, TerminalColor fg_color, TerminalColor bg_color)
 {
-    // handle wrapping the character if cursor_x > 80 or if newline
-    if (term->cursor_x > TERMINAL_WIDTH || c == '\n')
+    if (c == '\n' || term->cursor_x >= TERMINAL_WIDTH)
     {
         term->cursor_x = 0;
-        ++term->cursor_y;
-    }
+        term->cursor_y++;
 
-    if (c == '\n') 
-    {
-        return; // don't print newlines 
+        if (term->cursor_y >= TERMINAL_HEIGHT)
+        {
+            // scroll up
+            for (size_t y = 1; y < TERMINAL_HEIGHT; ++y)
+            {
+                for (size_t x = 0; x < TERMINAL_WIDTH; ++x)
+                {
+                    term->video_memory[(y - 1) * TERMINAL_WIDTH + x] = 
+                        term->video_memory[y * TERMINAL_WIDTH + x];
+                }
+            }
+
+            // clear the last line
+            for (size_t x = 0; x < TERMINAL_WIDTH; ++x)
+            {
+                term->video_memory[(TERMINAL_HEIGHT - 1) * TERMINAL_WIDTH + x] =
+                    TERM_CHAR_COLOR_WORD(' ', fg_color, bg_color);
+            }
+
+            term->cursor_y = TERMINAL_HEIGHT - 1;
+        }
+
+        if (c == '\n')
+            return;
     }
 
     int location = term->cursor_y * TERMINAL_WIDTH + term->cursor_x;
     term->video_memory[location] = TERM_CHAR_COLOR_WORD(c, fg_color, bg_color);
-
-    // TODO: make this robust and wrapping
     term->cursor_x++;
 }
+
 
 void Terminal_putStr(Terminal *term, const char *s)
 {

@@ -17,6 +17,7 @@ void main(void)
     Terminal term;
     Terminal_init(&term);
     Terminal_clear(&term);
-    Terminal_putStr(&term, "hello world! This is twig-os                         \n                   BIG WRAPPER TEST!!!!!");
+    Terminal_putStr(&term, "hello world! This is twig-os                         \n                   BIG WRAPPER TEST!!!!!"
+    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n you shall feel my wrath\n\n hi");
     halt();
 }
