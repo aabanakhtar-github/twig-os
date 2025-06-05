@@ -10,10 +10,12 @@
 
 #include "util.h"
 #include "terminal_io.h"
-
+#include "gdt.h"
 
 void main(void)
 {
+    initGDT();
+
     Terminal term;
     Terminal_init(&term);
     Terminal_clear(&term);
