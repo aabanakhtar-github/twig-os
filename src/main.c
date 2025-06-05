@@ -13,8 +13,7 @@
 
 void main(void)
 {
-    Terminal_putStr(&getKernel()->terminal, "Welcome to Twig-OS!");
-
+    Kernel* kernel = getKernel();
     // hang forever
     halt();
 }
