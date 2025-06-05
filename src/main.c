@@ -8,18 +8,13 @@
 
 #define main entryPoint
 
+#include "kernel.h"
 #include "util.h"
-#include "terminal_io.h"
-#include "gdt.h"
 
 void main(void)
 {
-    initGDT();
+    Terminal_putStr(&getKernel()->terminal, "Welcome to Twig-OS!");
 
-    Terminal term;
-    Terminal_init(&term);
-    Terminal_clear(&term);
-    Terminal_putStr(&term, "hello world! This is twig-os                         \n                   BIG WRAPPER TEST!!!!!"
-    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n you shall feel my wrath\n\n hi");
+    // hang forever
     halt();
 }
