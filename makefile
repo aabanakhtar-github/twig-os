@@ -5,7 +5,7 @@ ASM = nasm
 OBJCOPY = i686-elf-objcopy
 
 # Flags
-CFLAGS = -ffreestanding -O2 -Wall -Wextra -fno-rtti -fno-exceptions -Isrc
+CFLAGS = -ffreestanding -O2 -Wall -Wextra -Isrc
 ASMFLAGS = -felf32
 LDFLAGS = -T src/linker.ld -nostdlib -lgcc
 
@@ -13,6 +13,7 @@ LDFLAGS = -T src/linker.ld -nostdlib -lgcc
 SRC_DIR = src
 BUILD_DIR = build
 TARGET = $(BUILD_DIR)/myos.bin
+
 
 # Sources
 CPP_SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
@@ -24,6 +25,8 @@ C_OBJECTS   = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(C_SOURCES))
 ASM_OBJECTS = $(patsubst $(SRC_DIR)/%.asm, $(BUILD_DIR)/%.o, $(ASM_SOURCES))
 
 OBJECTS = $(filter %boot.o, $(ASM_OBJECTS)) $(filter-out %boot.o, $(ASM_OBJECTS)) $(C_OBJECTS) $(CPP_OBJECTS)
+
+$(info ASM_SOURCES = $(ASM_SOURCES))
 
 # Targets
 .PHONY: all clean run
