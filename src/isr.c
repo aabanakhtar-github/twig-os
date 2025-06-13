@@ -3,5 +3,5 @@
 
 void isr_handler(InterruptFrame* stack)
 {
-    __asm__ volatile("hlt");
+    Terminal_putStr(&getKernel()->terminal, "Hi");
 }

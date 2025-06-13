@@ -53,7 +53,6 @@ void setIDTEntry(size_t index, void(*callback)(), Byte attrib)
     target->isr_high = ((DWord)callback >> 16) & 0xFFFF; 
 }
 
-
 void initInterrupts(void)
 {
     static void (*isr_table[32])() = 

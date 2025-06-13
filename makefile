@@ -49,7 +49,7 @@ $(TARGET): $(OBJECTS) src/linker.ld
 	$(CC) $(LDFLAGS) -o $@ $(OBJECTS)
 
 run: $(TARGET)
-	qemu-system-i386 -kernel $(TARGET) -d int -no-reboot
+	qemu-system-i386 -kernel $(TARGET) -d int
 
 clean:
 	rm -rf $(BUILD_DIR)

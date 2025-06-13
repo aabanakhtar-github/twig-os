@@ -89,5 +89,4 @@ isr_dispatch:
 loadIDT:
     mov eax, [esp + 4] ; first arg (second is return addr)
     lidt [eax]
-    sti
     ret 
