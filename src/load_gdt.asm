@@ -5,7 +5,7 @@ loadGDT:
     mov eax, [esp + 4] ; load the first argument (ptr to gdt)
     lgdt [eax]
 
-    ; setup the selectors (they're all the same because they operate on memory?) 
+    ; setup the selectors (they're all the same because they operate on the same memory?) 
     mov ax, 0x10 
     mov ds, ax 
     mov es, ax 

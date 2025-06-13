@@ -1,20 +1,25 @@
 #include "kernel.h"
-#include "gdt.h"
+#include "descriptors.h"
 #include "stdbool.h"
+
+static void splashScreen(void);
 
 static Kernel kernel; 
 static bool kernel_ready = false; 
 
-static void initKernel() 
+void initKernel(void) 
 {
     /* load Descriptors */
     initGDT();
-
+    /* load interrupts */
+    initInterrupts();
+    
     Terminal_init(&kernel.terminal); 
     Terminal_clear(&kernel.terminal);
+    splashScreen();
 }
 
-static void splashScreen() 
+static void splashScreen(void) 
 {
     Kernel* kernel = getKernel();
     Terminal_putStr(&kernel->terminal, "================================================================================");
@@ -24,14 +29,7 @@ static void splashScreen()
     Terminal_putStr(&kernel->terminal, "================================================================================");
 }
 
-Kernel *getKernel()
+Kernel *getKernel(void)
 {
-    if (!kernel_ready) 
-    {
-        initKernel(); 
-        kernel_ready = true;
-        splashScreen();
-    }
-
     return &kernel; 
 }

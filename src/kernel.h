@@ -1,9 +1,13 @@
 
-#include "terminal_io.h"
+#include "terminal.h"
 
 typedef struct Kernel 
 {
    Terminal terminal; 
 } Kernel;
 
-Kernel* getKernel(); 
+void initKernel(void);
+Kernel* getKernel(void);
+
+// formatting and stuff
+void kprintf(const char* fmt, int);

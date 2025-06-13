@@ -43,7 +43,5 @@ void Terminal_putChar(Terminal* term, char c, TerminalColor fg_color, TerminalCo
 void Terminal_putStr(Terminal* term, const char* s); 
 void Terminal_clear(Terminal* term);
 
-
-
 #endif // TERMINAL_IO_H
 

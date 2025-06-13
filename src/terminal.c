@@ -1,5 +1,5 @@
-#include "terminal_io.h"
 #include "util.h"
+#include "terminal.h"
 
 void Terminal_init(Terminal* term)
 {
@@ -49,7 +49,7 @@ void Terminal_putChar(Terminal* term, char c, TerminalColor fg_color, TerminalCo
 
 void Terminal_putStr(Terminal *term, const char *s)
 {
-    for (size_t i = 0; i < stringLength(s); ++i)
+    for (size_t i = 0; i < strlen(s); ++i)
     {
         Terminal_putChar(term, s[i], TC_WHITE, TC_BLUE);
     }
