@@ -12,4 +12,6 @@ typedef struct
     DWord int_err;
 } __attribute__((packed)) InterruptFrame;
 
+void exceptionHandler(void);
+
 #endif

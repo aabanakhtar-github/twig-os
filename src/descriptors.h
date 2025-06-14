@@ -77,7 +77,6 @@ void initGDT(void);
 void initInterrupts(void);
 void setIDTEntry(size_t index, void(*callback)(), Byte attrib);
 
-void exceptionHandler(void);
 
 // isrs (0 - 31) represent CPU Exceptions and BAD things
 // must be handled to avoid crashing 

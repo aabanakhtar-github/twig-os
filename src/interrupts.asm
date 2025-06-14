@@ -10,12 +10,14 @@
         jmp isr_dispatch ; jump to the common isr handler 
 %endmacro
 
+[EXTERN exceptionHandler]
+
 %macro ISR_ERROR_CODE 1 
     [GLOBAL isr%1]
     isr%1: 
         cli
         push dword %1 
-        jmp isr_dispatch
+        jmp exceptionHandler 
 %endmacro
 
 ISR_NO_ERROR_CODE 0

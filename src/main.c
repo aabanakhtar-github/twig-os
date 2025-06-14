@@ -15,7 +15,7 @@ void main(void)
 {
     initKernel();
     Kernel* kernel = getKernel();
-
+    volatile int x =  (1/0);
     __asm__ volatile("int $0x4");
     __asm__ volatile("int $0x3");
     // hang forever

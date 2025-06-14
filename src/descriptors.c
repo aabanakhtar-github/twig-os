@@ -77,8 +77,3 @@ void initInterrupts(void)
 
     loadIDT(&IDT_register);
 }
-
-void exceptionHandler(void)
-{
-    __asm__ volatile("cli; hlt"); 
-}
