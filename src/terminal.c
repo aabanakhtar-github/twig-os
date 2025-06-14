@@ -55,6 +55,13 @@ void Terminal_putStr(Terminal *term, const char *s)
     }
 }
 
+void Terminal_putInt(Terminal *term, const int i)
+{
+    char buffer[12];
+    integerToString(i, buffer); 
+    Terminal_putStr(term, buffer);
+}
+
 void Terminal_clear(Terminal* term) 
 {
     for (size_t y = 0; y < TERMINAL_HEIGHT; ++y) 

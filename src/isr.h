@@ -1,8 +1,15 @@
-#include "util.h"
+#ifndef ISR_H
+#define ISR_H
 
-typedef struct {
-    DWord int_err;      // pushed first (or dummy 0)
-    DWord int_id;       // interrupt number
-    DWord edi, esi, ebp, esp, ebx, edx, ecx, eax;  // pusha
-    DWord ds;           // manually pushed
+#include "util.h"
+#include "types.h"
+
+typedef struct 
+{
+    DWord ds;
+    DWord edi, esi, ebp, esp, ebx, edx, ecx, eax;
+    DWord int_id;
+    DWord int_err;
 } __attribute__((packed)) InterruptFrame;
+
+#endif

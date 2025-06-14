@@ -36,4 +36,46 @@ inline void* memset(void* ptr, int x, size_t n_bytes)
     return (void*)target;
 }
 
-#endif
+// expects a buffer of 12 characters at max
+inline void integerToString(int value, char* str)
+{
+    char* ptr = str;
+    int is_negative = 0;
+
+    if (value == 0)
+    {
+        *ptr++ = '0';
+        *ptr = '\0';
+        return;
+    }
+
+    if (value < 0)
+    {
+        is_negative = 1;
+        value = -value;
+    }
+
+    char* start = ptr;
+    while (value != 0)
+    {
+        int digit = value % 10;
+        *ptr++ = '0' + digit;
+        value /= 10;
+    }
+
+    if (is_negative)
+    {
+        *ptr++ = '-';
+    }
+
+    *ptr = '\0';
+
+    for (char* end = ptr - 1; start < end; ++start, --end)
+    {
+        char temp = *start;
+        *start = *end;
+        *end = temp;
+    }
+}
+
+#endif 

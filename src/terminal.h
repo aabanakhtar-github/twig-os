@@ -40,7 +40,10 @@ typedef struct Terminal
 
 void Terminal_init(Terminal* term);
 void Terminal_putChar(Terminal* term, char c, TerminalColor fg_color, TerminalColor bg_color); 
-void Terminal_putStr(Terminal* term, const char* s); 
+void Terminal_putStr(Terminal* term, const char* s);
+void Terminal_putInt(Terminal* term, const int i); 
+void Terminal_putHex(Terminal* term, const int i); 
+void Terminal_putDouble(Terminal* term, const double d); 
 void Terminal_clear(Terminal* term);
 
 #endif // TERMINAL_IO_H

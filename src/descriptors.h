@@ -1,3 +1,6 @@
+#ifndef DESCRIPTORS_H
+#define DESCRIPTORS_H
+
 #include "types.h"
 
 // who designed ts
@@ -110,3 +113,5 @@ extern void isr28();
 extern void isr29();
 extern void isr30();
 extern void isr31();
+
+#endif
