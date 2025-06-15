@@ -42,7 +42,7 @@ void isr_handler(InterruptFrame* stack)
     if (stack->int_id < 32) 
     {
         Terminal_putStr(t, "A cpu exception has occured; Interrupt ID: "); 
-        Terminal_putInt(t, stack->int_id); 
+        Terminal_putHex(t, stack->int_id); 
         Terminal_putStr(t, ". Cause: ");
         Terminal_putStr(t, interrupt_messages[stack->int_id]);
         halt();

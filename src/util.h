@@ -78,4 +78,17 @@ inline void integerToString(int value, char* str)
     }
 }
 
+// expects a buffer of size 9
+inline void integerToStringHex(int hex_value, char* str)
+{
+    static const char hex_chars[] = "0123456789ABCDEF";
+    
+    int i;
+    for (i = 7; i >= 0; --i)
+    {
+        str[7 - i] = hex_chars[(hex_value >> (i * 4)) & 0xF];
+    }
+    str[8] = '\0';
+}
+
 #endif 

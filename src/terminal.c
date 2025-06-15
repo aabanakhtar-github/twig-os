@@ -62,6 +62,14 @@ void Terminal_putInt(Terminal *term, const int i)
     Terminal_putStr(term, buffer);
 }
 
+void Terminal_putHex(Terminal *term, const int i)
+{
+    char buffer[9];
+    integerToStringHex(i, buffer);
+    Terminal_putStr(term, "0x");
+    Terminal_putStr(term, buffer);
+}
+
 void Terminal_clear(Terminal* term) 
 {
     for (size_t y = 0; y < TERMINAL_HEIGHT; ++y) 
