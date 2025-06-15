@@ -11,12 +11,18 @@
 #include "kernel.h"
 #include "util.h"
 
-void main(void)
+void setup(void)
 {
     initKernel();
     Kernel* kernel = getKernel();
-    volatile int x =  (1/0);
-    __asm__ volatile("int $0x4");
+}
+
+void main(void)
+{
+    setup();
+
+    Kernel_printF("Hello World, this is printf %d \n", 34);
+
     __asm__ volatile("int $0x3");
     // hang forever
     halt();

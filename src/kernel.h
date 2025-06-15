@@ -12,6 +12,6 @@ void initKernel(void);
 Kernel* getKernel(void);
 
 // formatting and stuff
-void kprintf(const char* fmt, int);
+void Kernel_printF(const char* fmt, ...);
 
 #endif // KERNEL_H

@@ -86,3 +86,25 @@ void integerToStringHex(int hex_value, char* str)
     }
     str[8] = '\0';
 }
+
+void doubleToString(double value, char *str)
+{
+    int int_part = (int)value;
+    double frac = value - int_part;
+    if (frac < 0) frac = -frac;
+
+    // Convert integer part
+    integerToString(int_part, str);
+    size_t len = strlen(str);
+    str[len++] = '.';
+
+    // Convert fractional part (6 decimal places)
+    for (int i = 0; i < 6; i++) {
+        frac *= 10;
+        int digit = (int)frac;
+        str[len++] = '0' + digit;
+        frac -= digit;
+    }
+
+    str[len] = '\0';
+}

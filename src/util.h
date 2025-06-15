@@ -14,7 +14,7 @@ void* memset(void* ptr, int x, size_t n_bytes);
 void integerToString(int value, char* str);
 // expects a buffer of size 9
 void integerToStringHex(int hex_value, char* str);
-// expects a buffer of size 
+// expects a buffer of size 32
 void doubleToString(double value, char* str); 
 
 #endif 

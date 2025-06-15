@@ -1,5 +1,6 @@
 #include "util.h"
 #include "terminal.h"
+#include "stdarg.h"
 
 void Terminal_init(Terminal* term)
 {
@@ -68,6 +69,13 @@ void Terminal_putHex(Terminal *term, const int i)
     integerToStringHex(i, buffer);
     Terminal_putStr(term, "0x");
     Terminal_putStr(term, buffer);
+}
+
+void Terminal_putDouble(Terminal *term, const double d)
+{
+    char buffer[32];
+    doubleToString(d, buffer); 
+    Terminal_putStr(term, buffer); 
 }
 
 void Terminal_clear(Terminal* term) 
