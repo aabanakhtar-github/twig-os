@@ -14,14 +14,13 @@
 void setup(void)
 {
     initKernel();
-    Kernel* kernel = getKernel();
 }
 
 void main(void)
 {
     setup();
 
-    Kernel_printF("Hello World, this is printf %d \n", 34);
+    Kernel_printF("Hello World, this is printf %f \n", 34.69);
 
     __asm__ volatile("int $0x3");
     // hang forever

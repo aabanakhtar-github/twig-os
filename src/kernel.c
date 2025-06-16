@@ -1,12 +1,12 @@
 #include "kernel.h"
-#include "descriptors.h"
+#include "gdt.h"
+#include "interrupt_setup.h"
 #include "stdbool.h"
 #include "stdarg.h"
 
 static void splashScreen(void);
 
 static Kernel kernel; 
-static bool kernel_ready = false; 
 
 void initKernel(void) 
 {
