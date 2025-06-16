@@ -29,7 +29,7 @@ void initInterrupts(void)
     IDT_register.limit = sizeof(IDT) - 1;
 
     // zero out the whole IDT 
-    memset(IDT, NULL, sizeof(IDT)); 
+    memset(IDT, 0, sizeof(IDT)); 
 
     // bind the first 32 isr handlers (these are for CPU tweak outs)
     for (size_t i = 0; i < 32; ++i) 
@@ -70,8 +70,8 @@ void PIC_remap(Byte pic1, Byte pic2)
     ioWait();
 
     // enable all hardware interrupts 
-    outB(PIC1_DATA, 0); 
-    outB(PIC1_DATA, 0);
+    outB(PIC1_DATA, 0xFD); 
+    outB(PIC2_DATA, 0xFF);
 }
 
 void PIC_sendEndOfInterrupt(Byte irq_id)

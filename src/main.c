@@ -22,7 +22,6 @@ void main(void)
 
     Kernel_printF("Hello World, this is printf %f \n", 34.69);
 
-    __asm__ volatile("int $0x3");
     // hang forever
     halt();
 }
