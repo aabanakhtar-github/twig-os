@@ -13,5 +13,7 @@ typedef struct
 } __attribute__((packed)) InterruptFrame;
 
 void exceptionHandler(void);
+void isrHandler(InterruptFrame* frame);
+void irqHandler(InterruptFrame* frame);
 
 #endif

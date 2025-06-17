@@ -20,6 +20,16 @@
         jmp exceptionHandler 
 %endmacro
 
+; basically the same but for irqs
+%macro IRQ 1 
+    [GLOBAL irq%1]
+    irq%1: 
+        cli
+        push dword 0 ; irq has no errors 
+        push dword %1 
+        jmp irq_dispatch
+%endmacro
+
 ISR_NO_ERROR_CODE 0
 ISR_NO_ERROR_CODE 1
 ISR_NO_ERROR_CODE 2
@@ -53,8 +63,10 @@ ISR_ERROR_CODE    29
 ISR_NO_ERROR_CODE 30
 ISR_NO_ERROR_CODE    31
 
+IRQ 33 ; keyboard
 
-[EXTERN isr_handler]
+[EXTERN isrHandler]
+[EXTERN irqHandler]
 
 isr_dispatch:
     pusha ; store the state
@@ -69,7 +81,7 @@ isr_dispatch:
     mov gs, ax 
     
     push esp
-    call isr_handler
+    call isrHandler
     add esp, 4
 
     pop eax ; go back to user mode or whatever 
@@ -86,19 +98,40 @@ isr_dispatch:
     sti ; re enable interrupts
     iret ; return to normal execution
 
-[GLOBAL loadIDT]
+irq_dispatch:
+    pusha ; store the state
 
+    mov ax, ds 
+    push eax ; save the data segment descriptor 
+
+    mov ax, 0x10 ; go back to kernel mode just in case
+    mov ds, ax
+    mov es, ax
+    mov fs, ax 
+    mov gs, ax 
+    
+    push esp
+    call irqHandler
+    add esp, 4
+
+    pop eax ; go back to user mode or whatever 
+    mov ds, ax 
+    mov es, ax 
+    mov fs, ax 
+    mov gs, ax
+
+    popa ; restore the state
+
+    add esp, 8 ; pop the args (error and interrupt) off the stack
+               ; stack grows downwards
+
+    sti ; re enable interrupts
+    iret ; return to normal execution
+
+
+[GLOBAL loadIDT]
 loadIDT:
     mov eax, [esp + 4] ; first arg (second is return addr)
     lidt [eax]
     sti
     ret 
-
-
-irq_dispatch:
-    cli
-
-    
-
-    sti
-    iret

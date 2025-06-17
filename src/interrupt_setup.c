@@ -25,6 +25,16 @@ void initInterrupts(void)
         isr24,isr25,isr26, isr27, isr28, isr29, isr30, isr31
     };
 
+    static void (*irq_table[16])() = 
+    {
+        NULL,     // IRQ0 (timer)
+        irq33,    // IRQ1 (keyboard) 
+        NULL,     // IRQ2 (reserved)
+        NULL, NULL, NULL, NULL, NULL,  // IRQ3–7
+        NULL, NULL, NULL, NULL, NULL, NULL, NULL  // IRQ8–15
+    };
+
+
     IDT_register.base = (DWord)&IDT[0]; 
     IDT_register.limit = sizeof(IDT) - 1;
 
@@ -35,6 +45,13 @@ void initInterrupts(void)
     for (size_t i = 0; i < 32; ++i) 
     {
         setIDTEntry(i, isr_table[i], 0x8E); // ring 0, 32 bit interrupt, with presence
+    }
+
+    // 32 + 15 max irqs
+    for (size_t i = 0; i < (sizeof(irq_table) / 8); ++i)
+    {
+        size_t offset = 32; 
+        setIDTEntry(offset + i, irq_table[i], 0x8E);
     }
 
     PIC_remap(32, 40); // map the pic to interrupts 32-47

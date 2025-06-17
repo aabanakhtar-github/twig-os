@@ -23,7 +23,6 @@
 #define ICW4_BUF_MASTER	0x0C		/* Buffered mode/master */
 #define ICW4_SFNM	0x10		/* Special fully nested (not) */
 
-
 typedef struct IDTEntry 
 {
     Word isr_low; 
@@ -81,5 +80,8 @@ extern void isr28();
 extern void isr29();
 extern void isr30();
 extern void isr31();
+
+// same thing, for irqs
+extern void irq33();
 
 #endif // INTERRUPTS_H
