@@ -108,3 +108,33 @@ void doubleToString(double value, char *str)
 
     str[len] = '\0';
 }
+
+bool isNumeric(char c)
+{
+    char numbers[10] = {
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+    }; 
+
+    for (size_t i = 0; i < sizeof(numbers); ++i) 
+    {
+        if (c == numbers[i]) 
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+char toUpper(char c)
+{
+    // who knows how this works tbh
+    if (c >= 'a' && c <= 'z') 
+    {
+        return c - ('a' - 'A'); 
+    } 
+    else 
+    {
+        return c;
+    }
+}

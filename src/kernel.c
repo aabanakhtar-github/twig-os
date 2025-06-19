@@ -22,12 +22,11 @@ void initKernel(void)
 
 static void splashScreen(void) 
 {
-    Kernel* kernel = getKernel();
-    Terminal_putStr(&kernel->terminal, "================================================================================");
-    Terminal_putStr(&kernel->terminal, "                                Twig-OS  v0.1.0                                 ");
-    Terminal_putStr(&kernel->terminal, "================================================================================");
-    Terminal_putStr(&kernel->terminal, "             Repository: https://github.com/aabanakhtar/twig-os                 ");
-    Terminal_putStr(&kernel->terminal, "================================================================================");
+    Kernel_printF("================================================================================");
+    Kernel_printF("                                Twig-OS  v0.1.0                                 ");
+    Kernel_printF("================================================================================");
+    Kernel_printF("             Repository: https://github.com/aabanakhtar/twig-os                 ");
+    Kernel_printF("================================================================================");
 }
 
 Kernel *getKernel(void)

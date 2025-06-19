@@ -2,6 +2,7 @@
 #define UTIL_H
 
 #include "types.h"
+#include "stdbool.h"
 
 void halt(void);
 
@@ -16,5 +17,9 @@ void integerToString(int value, char* str);
 void integerToStringHex(int hex_value, char* str);
 // expects a buffer of size 32
 void doubleToString(double value, char* str); 
+
+bool isNumeric(char c);
+
+char toUpper(char c);
 
 #endif 

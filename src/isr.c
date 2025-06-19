@@ -2,6 +2,8 @@
 #include "io.h"
 #include "kernel.h"
 #include "interrupt_setup.h"
+#include "keyboard_driver.h"
+
 
 static const char* interrupt_messages[32] = {
     "Division By Zero",
@@ -38,10 +40,13 @@ static const char* interrupt_messages[32] = {
     "Reserved (31)"
 };
 
+#define CPU_EXCEPTION_MAX 32
+#define KEYBOARD_IRQ 33
+
 void isrHandler(InterruptFrame* stack)
 {
     Terminal* t = &getKernel()->terminal;
-    if (stack->int_id < 32) 
+    if (stack->int_id < CPU_EXCEPTION_MAX) 
     {
         Kernel_printF("An exception occured of id: %d and caused by: %s\n", stack->int_id, interrupt_messages[stack->int_id]);
         halt();
@@ -52,14 +57,25 @@ void isrHandler(InterruptFrame* stack)
 
 void irqHandler(InterruptFrame* stack)
 {
-    inB(0x60); 
-    Kernel_printF("An IRQ has occured! %d \n", stack->int_id);
-    PIC_sendEndOfInterrupt(stack->int_id - 32); // -32 because the eoi function expects offest based on PIC relative mapping
+    switch(stack->int_id) 
+    {
+        case KEYBOARD_IRQ:
+            keyboardHandler();
+            break;
+
+        default:
+            Kernel_printF("Unhandled irq! %d", stack->int_id);
+            halt();
+            break;
+    } 
+    
+    PIC_sendEndOfInterrupt(stack->int_id - CPU_EXCEPTION_MAX); // -32 because the eoi function expects offest based on PIC relative mapping
 }
 
 void exceptionHandler(void)
 {
-    Terminal_putStr(&getKernel()->terminal, "An unrecoverable exception occured"); 
+    Kernel_printF("An unrecoverrable exception has occured!");
     // halt the system
-    __asm__ volatile("cli; hlt"); 
+    __asm__ volatile("cli"); 
+    halt();
 }
