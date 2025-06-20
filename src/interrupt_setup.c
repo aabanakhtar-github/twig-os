@@ -1,5 +1,6 @@
 #include "interrupt_setup.h"
 #include "io.h"
+#include "util.h"
 
 __attribute__((aligned(16)))
 static IDTEntry IDT[256]; // 256 total interrupts

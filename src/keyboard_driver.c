@@ -5,6 +5,7 @@
 #include "util.h"
 
 #define KEYBOARD_PORT 0x60
+#define KEYBOARD_BUFFER_SIZE 0x1FFF
 // scancodes
 #define LEFT_SHIFT_PRESSED 0x2A
 #define RIGHT_SHIFT_PRESSED 0x36
@@ -12,6 +13,7 @@
 #define RIGHT_SHIFT_RELEASED 0xB6
 
 static KeyboardState state;
+static Byte keyboard_buffer[KEYBOARD_BUFFER_SIZE]; 
 
 static SignedByte us_keyboard[128] = 
 {
@@ -53,6 +55,15 @@ static SignedByte us_keyboard[128] =
     0,	/* All other keys are undefined */
 };
 
+void initKeyboard(void)
+{
+    RingBuffer* b = &state.keyboard_buffer; 
+    b->buffer = keyboard_buffer; 
+    b->buffer_size = sizeof(keyboard_buffer); 
+    b->head = 0; 
+    b->tail = 0;
+}
+
 void keyboardHandler(void)
 {
     Byte input = inB(KEYBOARD_PORT);
@@ -86,7 +97,8 @@ void keyboardHandler(void)
            key = numberRowShift(key);
         }
 
-        Kernel_printF("%c", key);
+        // try to push onto the buffer, if there's no space it just wont register 
+        RingBuffer_push(&state.keyboard_buffer, key);
     }
 }
 
@@ -107,3 +119,7 @@ char numberRowShift(char c)
     return characters[offset]; 
 }
 
+RingBuffer* getKeyboardBuffer(void)
+{
+    return &state.keyboard_buffer;
+}

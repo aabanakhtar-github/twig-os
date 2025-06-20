@@ -45,7 +45,6 @@ static const char* interrupt_messages[32] = {
 
 void isrHandler(InterruptFrame* stack)
 {
-    Terminal* t = &getKernel()->terminal;
     if (stack->int_id < CPU_EXCEPTION_MAX) 
     {
         Kernel_printF("An exception occured of id: %d and caused by: %s\n", stack->int_id, interrupt_messages[stack->int_id]);

@@ -1,6 +1,7 @@
 #include "kernel.h"
 #include "gdt.h"
 #include "interrupt_setup.h"
+#include "keyboard_driver.h"
 #include "stdbool.h"
 #include "stdarg.h"
 
@@ -14,10 +15,30 @@ void initKernel(void)
     initGDT();
     /* load interrupts */
     initInterrupts();
-    
+    /* load devices! */
+    initKeyboard();
+
     Terminal_init(&kernel.terminal); 
     Terminal_clear(&kernel.terminal);
     splashScreen();
+}
+
+void loopKernel(void)
+{
+    while (true) 
+    {
+        // print out the inputs ig
+        RingBuffer* buf = getKeyboardBuffer();
+        while (true) 
+        {
+            PopResult result = RingBuffer_pop(buf); 
+            if (!result.success)
+            {
+                break;
+            }
+            Kernel_printF("%c", (char)result.data);
+        } 
+    }
 }
 
 static void splashScreen(void) 
@@ -92,4 +113,10 @@ void Kernel_printF(const char* fmt, ...)
     }
 
     va_end(args);
+}
+
+void Kernel_readLine(char *buffer, size_t buffer_size)
+{
+    (void)buffer;
+    (void)buffer_size;
 }

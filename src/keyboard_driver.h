@@ -2,18 +2,20 @@
 #define KEYBOARD_DRIVER_H
 
 #include "stdbool.h"
+#include "ring_buffer.h"
 
 typedef struct KeyboardState
 {
-    char input_buffer[4096];
-    size_t buffer_last_charcter; 
+    RingBuffer keyboard_buffer;
     bool shift_pressed;
 } KeyboardState;
 
+// init
+void initKeyboard();
+
 void keyboardHandler(void);
 char numberRowShift(char c);
-// handle shift
-void shift(void);
 // buffer management
+RingBuffer* getKeyboardBuffer(void);
 
 #endif // KEYBOARD_DRIVER_H

@@ -20,7 +20,7 @@ void main(void)
 {
     setup();
 
-    Kernel_printF("Hello World, this is printf %f \n", 34.69);
+    loopKernel();
 
     // hang forever
     halt();

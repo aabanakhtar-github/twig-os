@@ -5,7 +5,7 @@ ASM = nasm
 OBJCOPY = i686-elf-objcopy
 
 # Flags
-CFLAGS = -ffreestanding -O2 -Wall -Wextra -Isrc
+CFLAGS = -ffreestanding -O2 -Wall -Wextra -Isrc -Werror
 ASMFLAGS = -felf32
 LDFLAGS = -T src/linker.ld -nostdlib -lgcc
 
