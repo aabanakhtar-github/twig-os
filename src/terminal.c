@@ -22,7 +22,7 @@ void Terminal_backspace(Terminal *term)
 
     bool is_on_row_before = term->cursor_y < term->last_protected_region_y; 
     bool is_on_current_row = term->cursor_y == term->last_protected_region_y;
-    bool is_before_protected_column = term->cursor_x <= term->last_protected_region_x; 
+    bool is_before_protected_column = term->cursor_x <= term->last_protected_region_x + 1; 
 
     // don't overwrite a protected area
     if (is_on_row_before || (is_on_current_row && is_before_protected_column))
@@ -47,49 +47,60 @@ void Terminal_backspace(Terminal *term)
 
 void Terminal_putChar(Terminal* term, char c, TerminalColor fg_color, TerminalColor bg_color)
 {
-    if (c == '\n' || term->cursor_x >= TERMINAL_WIDTH)
+    if (c == '\n')
     {
         term->cursor_x = 0;
-        term->cursor_y++;
-
-        if (term->cursor_y >= TERMINAL_HEIGHT)
-        {
-            // scroll up
-            for (size_t y = 1; y < TERMINAL_HEIGHT; ++y)
-            {
-                for (size_t x = 0; x < TERMINAL_WIDTH; ++x)
-                {
-                    term->video_memory[(y - 1) * TERMINAL_WIDTH + x] = 
-                        term->video_memory[y * TERMINAL_WIDTH + x];
-                }
-            }
-
-            // clear the last line
-            for (size_t x = 0; x < TERMINAL_WIDTH; ++x)
-            {
-                term->video_memory[(TERMINAL_HEIGHT - 1) * TERMINAL_WIDTH + x] =
-                    TERM_CHAR_COLOR_WORD(' ', fg_color, bg_color);
-            }
-
-            term->cursor_y = TERMINAL_HEIGHT - 1;
-        }
-
-        return;
+        term->cursor_y++; // handle newline
     }
     else if (c == '\b') 
     {
         Terminal_backspace(term);
         return;
     }
+    else
+    {
+        int location = term->cursor_y * TERMINAL_WIDTH + term->cursor_x;
+        term->video_memory[location] = TERM_CHAR_COLOR_WORD(c, fg_color, bg_color);
 
-    int location = term->cursor_y * TERMINAL_WIDTH + term->cursor_x;
-    term->video_memory[location] = TERM_CHAR_COLOR_WORD(c, fg_color, bg_color);
-    // protect characters
-    term->last_protected_region_x = term->mode == TM_PROTECTED ? term->cursor_x : term->last_protected_region_x; 
-    term->last_protected_region_y =  term->mode == TM_PROTECTED ? term->cursor_y : term->last_protected_region_y;
-    term->cursor_x++;
+        if (term->mode == TM_PROTECTED)
+        {
+            term->last_protected_region_x = term->cursor_x;
+            term->last_protected_region_y = term->cursor_y;
+        }
+
+        // wrap
+        term->cursor_x++;
+
+        if (term->cursor_x >= TERMINAL_WIDTH)
+        {
+            term->cursor_x = 0;
+            term->cursor_y++;
+        }
+    }
+
+    if (term->cursor_y >= TERMINAL_HEIGHT)
+    {
+        // scroll up
+        for (size_t y = 1; y < TERMINAL_HEIGHT; ++y)
+        {
+            // copy the line below us
+            for (size_t x = 0; x < TERMINAL_WIDTH; ++x)
+            {
+                term->video_memory[(y - 1) * TERMINAL_WIDTH + x] = 
+                    term->video_memory[y * TERMINAL_WIDTH + x];
+            }
+        }
+
+        // clear last line
+        for (size_t x = 0; x < TERMINAL_WIDTH; ++x)
+        {
+            term->video_memory[(TERMINAL_HEIGHT - 1) * TERMINAL_WIDTH + x] =
+                TERM_CHAR_COLOR_WORD(' ', fg_color, bg_color);
+        }
+
+        term->cursor_y = TERMINAL_HEIGHT - 1;
+    }
 }
-
 
 void Terminal_putStr(Terminal *term, const char *s)
 {
