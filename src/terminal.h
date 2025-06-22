@@ -26,25 +26,41 @@ typedef enum TerminalColors
 #define TERMINAL_WIDTH 80
 #define TERMINAL_HEIGHT 25
 
+// to protect form brakcpasce
+typedef enum TerminalMode 
+{
+    TM_PROTECTED, 
+    TM_UNPROTECTED
+} TerminalMode;
 
 typedef struct Terminal
 {
     // pointer to video mem
     volatile Word* video_memory;
-    int cursor_x;
-    int cursor_y;
+    TerminalMode mode; 
+    size_t cursor_x;
+    size_t cursor_y;
+    // to protect the characters from backspace
+    size_t last_protected_region_x;
+    size_t last_protected_region_y;
 } Terminal;
 
 // handy tool (thanks Chat GPT)
 #define TERM_CHAR_COLOR_WORD(ch, fg, bg) ((Word)(ch) | ((Word)(fg | (bg << 4)) << 8))
 
 void Terminal_init(Terminal* term);
+void Terminal_backspace(Terminal* term);
+
+
 void Terminal_putChar(Terminal* term, char c, TerminalColor fg_color, TerminalColor bg_color); 
 void Terminal_putStr(Terminal* term, const char* s);
 void Terminal_putInt(Terminal* term, const int i); 
 void Terminal_putHex(Terminal* term, const int i); 
 void Terminal_putDouble(Terminal* term, const double d); 
 void Terminal_clear(Terminal* term);
+
+
+void sanitizeInput(const char* original, char* target);
 
 #endif // TERMINAL_IO_H
 

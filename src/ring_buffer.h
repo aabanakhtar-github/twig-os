@@ -34,5 +34,6 @@ typedef struct PopResult
 // false if failed
 bool RingBuffer_push(RingBuffer* buf, Byte data); 
 PopResult RingBuffer_pop(RingBuffer* buf);
+inline bool RingBuffer_isEmpty(RingBuffer* buf) { return buf->head == buf->tail; }
 
 #endif

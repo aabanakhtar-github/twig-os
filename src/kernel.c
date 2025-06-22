@@ -25,29 +25,25 @@ void initKernel(void)
 
 void loopKernel(void)
 {
+    Kernel_printF("\n\ntwig $  ");
     while (true) 
     {
         // print out the inputs ig
         RingBuffer* buf = getKeyboardBuffer();
-        while (true) 
+        PopResult pop = RingBuffer_pop(buf);
+        if (pop.success) 
         {
-            PopResult result = RingBuffer_pop(buf); 
-            if (!result.success)
-            {
-                break;
-            }
-            Kernel_printF("%c", (char)result.data);
-        } 
+            getKernel()->terminal.mode = TM_UNPROTECTED;
+            Terminal_putChar(&getKernel()->terminal, pop.data, TC_WHITE, TC_BLUE);
+        }
     }
 }
 
 static void splashScreen(void) 
 {
-    Kernel_printF("================================================================================");
-    Kernel_printF("                                Twig-OS  v0.1.0                                 ");
-    Kernel_printF("================================================================================");
-    Kernel_printF("             Repository: https://github.com/aabanakhtar/twig-os                 ");
-    Kernel_printF("================================================================================");
+    Kernel_printF("                                 Twig-OS  v0.1.0                                ");
+    Kernel_printF("               Repository: https://github.com/aabanakhtar/twig-os                ");
+    Kernel_printF("===============================================================================");
 }
 
 Kernel *getKernel(void)
@@ -58,6 +54,7 @@ Kernel *getKernel(void)
 void Kernel_printF(const char* fmt, ...)
 {
     Terminal* term = &getKernel()->terminal;
+    term->mode = TM_PROTECTED;
     va_list args;
     va_start(args, fmt);
 
