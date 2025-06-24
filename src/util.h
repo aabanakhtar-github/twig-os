@@ -8,6 +8,7 @@ void halt(void);
 
 // C standard reimplementations
 size_t strlen(const char* str);
+int strcmp(const char* a, const char* b);
 void* memset(void* ptr, int x, size_t n_bytes);
 
 // USEFUL TOOLS

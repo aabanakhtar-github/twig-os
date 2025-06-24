@@ -5,7 +5,6 @@
 #include "util.h"
 
 #define KEYBOARD_PORT 0x60
-#define KEYBOARD_BUFFER_SIZE 0x1FFF
 // scancodes
 #define LEFT_SHIFT_PRESSED 0x2A
 #define RIGHT_SHIFT_PRESSED 0x36

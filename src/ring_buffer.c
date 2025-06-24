@@ -2,12 +2,7 @@
 
 bool RingBuffer_push(RingBuffer *buf, Byte data)
 {
-    size_t next = buf->head + 1; 
-    if (next >= buf->buffer_size) 
-    {
-        // move to head
-        next = 0;
-    }
+    size_t next = (buf->head + 1) % buf->buffer_size;
 
     // no space
     if (next == buf->tail)

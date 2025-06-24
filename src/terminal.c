@@ -149,7 +149,7 @@ void sanitizeInput(const char *original, char *target)
     int count = 0; 
     for (size_t i = 0; i < strlen(original); ++i) 
     {
-        if (original[i] == '\b' && i != 0) 
+        if ((original[i] == '\b' || original[i] == '\n') && i != 0) 
         {
             count--;
         } 

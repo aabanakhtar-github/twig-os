@@ -36,4 +36,19 @@ bool RingBuffer_push(RingBuffer* buf, Byte data);
 PopResult RingBuffer_pop(RingBuffer* buf);
 inline bool RingBuffer_isEmpty(RingBuffer* buf) { return buf->head == buf->tail; }
 
+inline size_t RingBuffer_length(RingBuffer* buf) { 
+    if (RingBuffer_isEmpty(buf)) 
+    { 
+       return 0; 
+    }
+    else if (buf->head > buf->tail) 
+    {
+        return buf->head - buf->tail + 1;
+    }
+    else 
+    {
+        return buf->head + (buf->buffer_size - buf->tail + 1);
+    }
+}
+
 #endif

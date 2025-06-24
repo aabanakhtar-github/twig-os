@@ -4,6 +4,8 @@
 #include "stdbool.h"
 #include "ring_buffer.h"
 
+#define KEYBOARD_BUFFER_SIZE 0x1000
+
 typedef struct KeyboardState
 {
     RingBuffer keyboard_buffer;

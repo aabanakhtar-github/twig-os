@@ -21,6 +21,30 @@ size_t strlen(const char* str)
     return length;
 }
 
+int strcmp(const char *str1, const char *str2) {
+    int i = 0;
+    while(str1[i] == str2[i]) 
+    {
+        if(str1[i] == '\0' || str2[i] == '\0') 
+        {
+            break;
+        }
+        i++;
+    }
+
+    // if equal length and same
+    if(str1[i] == '\0' && str2[i] == '\0') 
+    {
+        return 0;
+    }
+    // compare the first mismatched character (< means str2 is greater)
+    else 
+    {
+        return str1[i] - str2[i];
+    }
+}
+
+
 void* memset(void* ptr, int x, size_t n_bytes)
 {
     Byte val = (Byte)x; 
