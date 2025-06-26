@@ -142,23 +142,30 @@ void Terminal_clear(Terminal* term)
             term->video_memory[location] = TERM_CHAR_COLOR_WORD(' ', TC_WHITE, TC_BLUE);
         }
     }
+
+    term->cursor_x = 0; 
+    term->cursor_y = 0;
 }
 
 void sanitizeInput(const char *original, char *target)
 {
-    int count = 0; 
-    for (size_t i = 0; i < strlen(original); ++i) 
+    int len = strlen(original); 
+    int j = 0; // target index
+    for (int i = 0; i < len; ++i) 
     {
-        if ((original[i] == '\b' || original[i] == '\n') && i != 0) 
+        if (!isAlpha(original[i]) && original[i] != '\b') 
         {
-            count--;
-        } 
-        else 
-        {
-            target[count] = original[i];
-            ++count;
+            continue;
         }
+        else if (original[i] == '\b' && j != 0) 
+        {
+            --j; // move back a character to setup the next write point 
+            continue;
+        }
+
+        target[j] = original[i]; 
+        ++j;
     }
 
-    target[count] = (char)0;
+    target[j] = 0; // null terminate
 }

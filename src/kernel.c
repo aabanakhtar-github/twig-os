@@ -58,12 +58,25 @@ void loopKernel(void)
         }
 
         char input[KEYBOARD_BUFFER_SIZE] = {0};
-        if (Kernel_readLine(input, KEYBOARD_BUFFER_SIZE) > 0) {
-            Kernel_printF("%s", input);
-
-            if (strcmp(input, "about\n") == 0)
+        if (Kernel_readLine(input, KEYBOARD_BUFFER_SIZE) > 0) 
+        {
+            char sanitized[KEYBOARD_BUFFER_SIZE] = {0}; 
+            sanitizeInput(input, sanitized);
+            Kernel_printF("running: %s", sanitized); 
+            
+            if (strcmp(sanitized, "about") == 0)
             {
-                Kernel_printF("Twig OS testbench.\n");
+                Kernel_printF("\n      //\n");
+                Kernel_printF("     //\n");
+                Kernel_printF("  \\\\//\n");
+                Kernel_printF("   ||\n");
+                Kernel_printF("   ||\n");
+                Kernel_printF("\n\n");
+                Kernel_printF("  Twig OS, v0.0.1\n\n\n");            
+            }
+            else if (strcmp(input, "clear\n") == 0) 
+            {
+                Terminal_clear(&getKernel()->terminal);
             }
             else 
             {

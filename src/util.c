@@ -150,6 +150,16 @@ bool isNumeric(char c)
     return false;
 }
 
+bool isAlpha(char c)
+{
+    if ((c >= 'a' && c <= 'z')  || (c >= 'A' && c <= 'Z'))
+    {
+        return true;
+    }
+
+    return false;
+}
+
 char toUpper(char c)
 {
     // who knows how this works tbh

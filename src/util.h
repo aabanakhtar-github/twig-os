@@ -20,7 +20,7 @@ void integerToStringHex(int hex_value, char* str);
 void doubleToString(double value, char* str); 
 
 bool isNumeric(char c);
-
+bool isAlpha(char c);
 char toUpper(char c);
 
 #endif 

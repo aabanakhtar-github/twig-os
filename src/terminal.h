@@ -59,7 +59,7 @@ void Terminal_putHex(Terminal* term, const int i);
 void Terminal_putDouble(Terminal* term, const double d); 
 void Terminal_clear(Terminal* term);
 
-// remove backspaaces
+// buffer size should be keyboard_buffer_max
 void sanitizeInput(const char* original, char* target);
 
 #endif // TERMINAL_IO_H

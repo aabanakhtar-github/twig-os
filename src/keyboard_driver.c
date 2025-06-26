@@ -96,7 +96,12 @@ void keyboardHandler(void)
            key = numberRowShift(key);
         }
 
-        // try to push onto the buffer, if there's no space it just wont register 
+        // try to push onto the buffer, if there's no space it just wont register
+        if (key == 0) 
+        {
+            return; // don't push goofies onto the buffer 
+        } 
+
         RingBuffer_push(&state.keyboard_buffer, key);
     }
 }
