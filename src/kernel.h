@@ -16,6 +16,7 @@ void loopKernel(void);
 Kernel* getKernel(void);
 
 // formatting and stuff
+void splashScreen(void);
 void Kernel_printF(const char* fmt, ...);
 size_t Kernel_readLine(char *buffer, size_t buffer_size);
 #endif // KERNEL_H

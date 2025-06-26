@@ -4,8 +4,7 @@
 #include "stdbool.h"
 #include "stdarg.h"
 #include "util.h"
-
-static void splashScreen(void);
+#include "shell.h"
 
 static Kernel kernel; 
 static char input_buffer[KEYBOARD_BUFFER_SIZE];
@@ -62,33 +61,14 @@ void loopKernel(void)
         {
             char sanitized[KEYBOARD_BUFFER_SIZE] = {0}; 
             sanitizeInput(input, sanitized);
-            Kernel_printF("running: %s", sanitized); 
-            
-            if (strcmp(sanitized, "about") == 0)
-            {
-                Kernel_printF("\n      //\n");
-                Kernel_printF("     //\n");
-                Kernel_printF("  \\\\//\n");
-                Kernel_printF("   ||\n");
-                Kernel_printF("   ||\n");
-                Kernel_printF("\n\n");
-                Kernel_printF("  Twig OS, v0.0.1\n\n\n");            
-            }
-            else if (strcmp(input, "clear\n") == 0) 
-            {
-                Terminal_clear(&getKernel()->terminal);
-            }
-            else 
-            {
-                Kernel_printF("Twig: unknown command.\n");
-            }
-
-            should_print_prompt = true;
+            Kernel_printF("running: %s.\n", sanitized); 
+            shellRun(sanitized); 
+             should_print_prompt = true;
         }
     }
 }
 
-static void splashScreen(void) 
+void splashScreen(void) 
 {
     Kernel_printF("                                 Twig-OS  v0.1.0                                ");
     Kernel_printF("               Repository: https://github.com/aabanakhtar/twig-os                ");
