@@ -12,7 +12,7 @@ readCR0:
 [GLOBAL writeCR3] 
 writeCR3: 
     mov eax, [esp + 4]
-    move cr3, eax 
+    mov cr3, eax 
     ret 
 
 [GLOBAL readCR3]
