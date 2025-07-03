@@ -17,6 +17,10 @@ bool shellRun(const char* sanitized)
     {
         reboot(); 
     }
+    else if (strcmp(sanitized, "help") == 0) 
+    {
+        help();
+    }
     else if (strcmp(sanitized, "") == 0)
     {
     }
@@ -44,6 +48,24 @@ void clear(void)
 {
     Terminal_clear(&getKernel()->terminal);
 }
+
+void help(void) 
+{
+    static const char* commands[] = {
+        "reboot - reboot the system", 
+        "clear - clear the terminal", 
+        "help - get help on commands", 
+        "about - about TwigOS"
+    };
+
+    Kernel_printF("help:\n"); 
+
+    for (size_t i = 0; i < (sizeof(commands) / sizeof(commands[0])); ++i) 
+    {
+        Kernel_printF("[%d] %s\n", i, commands[i]);
+    }
+}
+
 
 void reboot(void)
 {

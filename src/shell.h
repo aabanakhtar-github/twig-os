@@ -7,6 +7,7 @@ bool shellRun(const char* command);
 // builtins
 void about(void);
 void clear(void);
+void help(void);
 void reboot(void);
 
 #endif // SHELL_H

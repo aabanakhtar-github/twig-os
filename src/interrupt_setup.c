@@ -87,7 +87,7 @@ void PIC_remap(Byte pic1, Byte pic2)
     outB(PIC2_DATA, ICW4_8086); // same here 
     ioWait();
 
-    // enable all hardware interrupts 
+    // disable all hardware interrupts except keyboard
     outB(PIC1_DATA, 0xFD); 
     outB(PIC2_DATA, 0xFF);
 }
