@@ -35,4 +35,6 @@ SECTIONS
 		*(COMMON)
 		*(.bss)
 	}
+
+	_KERNEL_HEAP_START = .;
 }

@@ -10,6 +10,7 @@
 
 #include "kernel.h"
 #include "util.h"
+#include "memory.h"
 
 void setup(void)
 {
@@ -20,6 +21,9 @@ void main(void)
 {
     setup();
 
+    int* a = kMalloc(sizeof(int)); 
+    *a = 799999;
+    Kernel_printF("\n%d %x", *a, a); 
     loopKernel();
 
     // hang forever

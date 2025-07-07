@@ -5,6 +5,7 @@
 #include "stdarg.h"
 #include "util.h"
 #include "shell.h"
+#include "memory.h"
 
 static Kernel kernel; 
 static char input_buffer[KEYBOARD_BUFFER_SIZE];
@@ -17,7 +18,7 @@ void initKernel(void)
     initInterrupts();
     /* load devices! */
     initKeyboard();
-
+    
     /* create the universal input buffer*/
     kernel.input_buffer.buffer = (Byte*)input_buffer; 
     kernel.input_buffer.buffer_size = sizeof(input_buffer); 
@@ -27,6 +28,8 @@ void initKernel(void)
     Terminal_init(&kernel.terminal); 
     Terminal_clear(&kernel.terminal);
     splashScreen();
+
+    Kernel_printF("%x", (DWord)setupMemory());
 }
 
 void loopKernel(void)
