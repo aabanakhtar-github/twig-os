@@ -20,10 +20,8 @@ void setup(void)
 void main(void)
 {
     setup();
-
-    int* a = kMalloc(sizeof(int)); 
-    *a = 799999;
-    Kernel_printF("\n%d %x", *a, a); 
+    alloc(4);
+    alloc(4);
     loopKernel();
 
     // hang forever

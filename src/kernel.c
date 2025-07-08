@@ -28,8 +28,7 @@ void initKernel(void)
     Terminal_init(&kernel.terminal); 
     Terminal_clear(&kernel.terminal);
     splashScreen();
-
-    Kernel_printF("%x", (DWord)setupMemory());
+    initMemory();
 }
 
 void loopKernel(void)

@@ -35,6 +35,13 @@ SECTIONS
 		*(COMMON)
 		*(.bss)
 	}
+	
+	_KERNEL_HEAP_START = ALIGN(8);
 
-	_KERNEL_HEAP_START = .;
+	/* Reserve 1 MB heap */
+	.heap (NOLOAD) : ALIGN(8)
+	{
+		. = . + 0x100000; /* Reserve 1 MB */
+	}
+
 }

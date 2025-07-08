@@ -2,15 +2,16 @@
 #define MEMORY_H
 
 #include "types.h"
+#include "stdbool.h"
 
-extern DWord _KERNEL_HEAP_START;
-
-
-inline void *setupMemory(void) 
+typedef struct MemBlock 
 {
-    return &_KERNEL_HEAP_START;
-}
+    bool used; 
+    size_t size; 
+    struct MemBlock* next; 
+} MemBlock;
 
-void* kMalloc(size_t size);
+void initMemory(void);
+void* alloc(size_t n);
 
 #endif // MEMORY_H

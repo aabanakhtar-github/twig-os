@@ -1,5 +1,9 @@
 {
     "files.associations": {
-        "kernel_entry.C": "cpp"
+        "kernel_entry.C": "cpp",
+        "system_error": "cpp",
+        "memory.h": "c",
+        "stdbool.h": "c",
+        "types.h": "c"
     }
 }
