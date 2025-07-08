@@ -6,22 +6,25 @@
 #error("Cannot build without i686 compiler")
 #endif
 
-#define main entryPoint
+#define kmain entryPoint
 
 #include "kernel.h"
 #include "util.h"
 #include "memory.h"
 
-void setup(void)
+void kmain(void)
 {
-    initKernel();
-}
+    initKernel(); 
+    alloc(4);
+    int* a =  alloc(8);
+    printMemoryBlocks(); 
 
-void main(void)
-{
-    setup();
+    free(a); 
+    printMemoryBlocks(); 
+
     alloc(4);
-    alloc(4);
+    printMemoryBlocks();
+
     loopKernel();
 
     // hang forever

@@ -9,6 +9,12 @@ static void* heap_start;
 static MemBlock* blocks; 
 static size_t bump = 0; 
 
+#define MEMBLOCK_LOOP(block_identifier) \
+    MemBlock* block_identifier = blocks; \
+    while (block_identifier != NULL) \
+
+#define MEMBLOCK_UPDATE(block_identifier) block_identifier = block_identifier->next
+
 void initMemory(void)
 {
     heap_start = (void*)(_KERNEL_HEAP_START);
@@ -23,11 +29,30 @@ void initMemory(void)
     Kernel_printF("Memblock size: %d\n ", MEMBLOCK_SIZE);
 }
 
+void printMemoryBlocks(void)
+{
+    Kernel_printF("---------------\n");
+    int i = 0; 
+    MEMBLOCK_LOOP(block)
+    {
+        Kernel_printF("id: %d, used: %s, location: %d, payload size: %x\n", i++, block->used ? "true" : "false", (DWord)block, block->size);
+        MEMBLOCK_UPDATE(block);
+    }
+}
+
 void* alloc(size_t n)
 {
-    Kernel_printF("ALLOCATION================================\n");
-    
-    int bump_og = bump; 
+    MEMBLOCK_LOOP(existing_block) 
+    {
+        if (!existing_block->used && existing_block->size >= n)
+        {
+            existing_block->used = true;
+            return (void*)((Byte*)existing_block + MEMBLOCK_SIZE); 
+        }
+
+        MEMBLOCK_UPDATE(existing_block);
+    }
+
     MemBlock* block = (MemBlock*)((Byte*)heap_start + bump);
     block->used = true; 
     block->size = n; 
@@ -38,14 +63,11 @@ void* alloc(size_t n)
 
     block->next = blocks; 
     blocks = block; 
-
-    MemBlock* node = blocks; 
-    while (node != NULL) 
-    {
-        Kernel_printF("Address: %d\n", (DWord)node);
-        node = node->next;
-    }
-
-    Kernel_printF("Bump size change:%d\n", bump - bump_og); 
     return return_addr;
+}
+
+void free(void* ptr)
+{
+    MemBlock* block = (MemBlock*)((Byte*)ptr - MEMBLOCK_SIZE);
+    block->used = false; 
 }

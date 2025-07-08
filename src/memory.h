@@ -12,6 +12,8 @@ typedef struct MemBlock
 } MemBlock;
 
 void initMemory(void);
+void printMemoryBlocks(void);
 void* alloc(size_t n);
+void free(void* ptr);
 
 #endif // MEMORY_H
