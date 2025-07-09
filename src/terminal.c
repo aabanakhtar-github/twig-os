@@ -2,6 +2,8 @@
 #include "terminal.h"
 #include "stdarg.h"
 
+#define TERMINAL_TAG "[Terminal] "
+
 void Terminal_init(Terminal* term)
 {
     term->video_memory = (Word*)0xB8000; 
@@ -10,6 +12,8 @@ void Terminal_init(Terminal* term)
     term->last_protected_region_x = 0; 
     term->last_protected_region_y = 0; 
     term->mode = TM_PROTECTED;
+
+    Terminal_putStr(term, TERMINAL_TAG "Finished terminal setup!\n");
 }
 
 void Terminal_backspace(Terminal *term)

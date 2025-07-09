@@ -1,5 +1,6 @@
 #include "gdt.h"
 #include "util.h"
+#include "kernel.h"
 
 static GDTEntry GDT_entries[6]; 
 static TSSEntry TSS;
@@ -20,6 +21,8 @@ static void setGDTEntry(size_t index, int base, int access, int flags, int limit
 
 void initGDT(void)
 {
+    Kernel_printF("[GDT] Setting up GDT!\n");
+
     GDTPointer gdt_pointer = 
     { 
         .base =  (DWord)&GDT_entries, 

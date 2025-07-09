@@ -1,10 +1,13 @@
 #include "interrupt_setup.h"
 #include "io.h"
 #include "util.h"
+#include "kernel.h"
 
 __attribute__((aligned(16)))
 static IDTEntry IDT[256]; // 256 total interrupts
 static IDTRegister IDT_register;
+
+#define INTERRUPTS_TAG "[Interrupts] "
 
 void setIDTEntry(size_t index, void(*callback)(), Byte attrib) 
 {
@@ -56,8 +59,9 @@ void initInterrupts(void)
     }
 
     PIC_remap(32, 40); // map the pic to interrupts 32-47
-
+    Kernel_printF(INTERRUPTS_TAG "Remapped PIC!\n"); 
     loadIDT(&IDT_register);
+    Kernel_printF(INTERRUPTS_TAG "Loaded IDT!\n");
 }
 
 // sequence goes like this 

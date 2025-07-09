@@ -11,6 +11,8 @@
 #define LEFT_SHIFT_RELEASED 0xAA
 #define RIGHT_SHIFT_RELEASED 0xB6
 
+#define KEYBOARD_TAG "[KB] "
+
 static KeyboardState state;
 static Byte keyboard_buffer[KEYBOARD_BUFFER_SIZE]; 
 
@@ -56,6 +58,7 @@ static SignedByte us_keyboard[128] =
 
 void initKeyboard(void)
 {
+    Kernel_printF(KEYBOARD_TAG "Setting up keyboard buffer!\n");
     RingBuffer* b = &state.keyboard_buffer; 
     b->buffer = keyboard_buffer; 
     b->buffer_size = sizeof(keyboard_buffer); 

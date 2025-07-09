@@ -7,11 +7,16 @@
 #include "shell.h"
 #include "memory.h"
 
+#define KERNEL_TAG
+
 static Kernel kernel; 
 static char input_buffer[KEYBOARD_BUFFER_SIZE];
 
 void initKernel(void) 
 {
+    Terminal_init(&kernel.terminal); 
+    Terminal_clear(&kernel.terminal); 
+
     /* load Descriptors */
     initGDT();
     /* load interrupts */
@@ -25,10 +30,11 @@ void initKernel(void)
     kernel.input_buffer.head = 0; 
     kernel.input_buffer.tail = 0; 
 
-    Terminal_init(&kernel.terminal); 
-    Terminal_clear(&kernel.terminal);
+    initMemory(); /*setup mem blocks*/
+
+    for (int i = 0; i < 10000; ++i) {}
+
     splashScreen();
-    initMemory();
 }
 
 void loopKernel(void)
@@ -73,8 +79,8 @@ void loopKernel(void)
 void splashScreen(void) 
 {
     Kernel_printF("                                 Twig-OS  v0.1.0                                ");
-    Kernel_printF("               Repository: https://github.com/aabanakhtar/twig-os                ");
-    Kernel_printF("=================================================================================");
+    Kernel_printF("               Repository: https://github.com/aabanakhtar/twig-os              ");
+    Kernel_printF("================================================================================");
 }
 
 Kernel *getKernel(void)
