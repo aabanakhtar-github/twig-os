@@ -2,7 +2,7 @@
 #include "kernel.h"
 
 #define MEMBLOCK_SIZE sizeof(MemBlock)
-#define KERNEL_HEAP_SIZE 0x100000
+#define KERNEL_HEAP_SIZE 0x01000000 // 16 megabyte heap
 
 extern char _KERNEL_HEAP_START[]; 
 static void* heap_start;
@@ -58,7 +58,7 @@ void* alloc(size_t n)
 
     if ((Byte*)heap_start + bump >= (Byte*)heap_end)
     {
-
+        return NULL; // out of space
     }
 
     MemBlock* block = (MemBlock*)((Byte*)heap_start + bump);

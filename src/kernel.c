@@ -6,6 +6,7 @@
 #include "util.h"
 #include "shell.h"
 #include "memory.h"
+#include "string.h"
 
 #define KERNEL_TAG
 
@@ -127,6 +128,12 @@ void Kernel_printF(const char* fmt, ...)
                 case 'f': {
                     double val = va_arg(args, double);
                     Terminal_putDouble(term, val);
+                    break;
+                }
+                // custom for TString
+                case 'T': {
+                    TString str = va_arg(args, TString);
+                    Terminal_putStr(term, str.buffer);
                     break;
                 }
                 case '%': {

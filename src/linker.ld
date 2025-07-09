@@ -41,7 +41,7 @@ SECTIONS
 	/* Reserve 1 MB heap */
 	.heap (NOLOAD) : ALIGN(8)
 	{
-		. = . + 0x100000; /* Reserve 1 MB */
+		. = . + 0x01000000; /* Reserve 16 MB */
 	}
 
 }

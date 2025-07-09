@@ -10,21 +10,23 @@
 
 #include "kernel.h"
 #include "util.h"
+#include "string.h"
 #include "memory.h"
 
 void kmain(void)
 {
     initKernel(); 
-    alloc(4);
-    int* a =  alloc(8);
+    TString string; 
+    TString_initFrom(&string, "Hello World!"); 
     printMemoryBlocks(); 
+    int* a = alloc(4);
 
-    free(a); 
-    printMemoryBlocks(); 
+    Kernel_printF("%T\n", string);
 
-    alloc(4);
     printMemoryBlocks();
-
+    TString_destroy(&string);
+    free(a);
+    printMemoryBlocks();
     loopKernel();
 
     // hang forever
