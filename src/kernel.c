@@ -6,14 +6,37 @@
 #include "util.h"
 #include "shell.h"
 #include "memory.h"
-#include "string.h"
 
 #define KERNEL_TAG
 
 static Kernel kernel; 
 static char input_buffer[KEYBOARD_BUFFER_SIZE];
 
-void initKernel(void) 
+void runBackground(bool* should_print_prompt)
+{
+    if (*should_print_prompt) 
+    {
+        Kernel_printF("twig-os $ ");
+        *should_print_prompt = false;
+    }
+
+    // print out the inputs ig
+    RingBuffer* buf = getKeyboardBuffer();
+    RingBuffer* input_buffer = &getKernel()->input_buffer;
+
+    PopResult pop = RingBuffer_pop(buf);
+    if (pop.success) 
+    {
+        getKernel()->terminal.mode = TM_UNPROTECTED;
+
+        // make it available for readline
+        RingBuffer_push(input_buffer, pop.data); 
+
+        Terminal_putChar(&getKernel()->terminal, pop.data, TC_WHITE, TC_BLUE);
+    }
+}
+
+void initKernel(void)
 {
     Terminal_init(&kernel.terminal); 
     Terminal_clear(&kernel.terminal); 
@@ -44,36 +67,12 @@ void loopKernel(void)
 
     while (true) 
     {
-        if (should_print_prompt) 
-        {
-            Kernel_printF("twig-os $ ");
-            should_print_prompt = false;
-        }
+        runBackground(&should_print_prompt);
+        TString input = Kernel_readLine(); 
+        shellRun(&input);
+        TString_destroy(&input);
 
-        // print out the inputs ig
-        RingBuffer* buf = getKeyboardBuffer();
-        RingBuffer* input_buffer = &getKernel()->input_buffer;
-
-        PopResult pop = RingBuffer_pop(buf);
-        if (pop.success) 
-        {
-            getKernel()->terminal.mode = TM_UNPROTECTED;
-
-            // make it available for readline
-            RingBuffer_push(input_buffer, pop.data); 
-
-            Terminal_putChar(&getKernel()->terminal, pop.data, TC_WHITE, TC_BLUE);
-        }
-
-        char input[KEYBOARD_BUFFER_SIZE] = {0};
-        if (Kernel_readLine(input, KEYBOARD_BUFFER_SIZE) > 0) 
-        {
-            char sanitized[KEYBOARD_BUFFER_SIZE] = {0}; 
-            sanitizeInput(input, sanitized);
-            Kernel_printF("running: %s.\n", sanitized); 
-            shellRun(sanitized); 
-             should_print_prompt = true;
-        }
+        should_print_prompt = true;
     }
 }
 
@@ -156,7 +155,7 @@ void Kernel_printF(const char* fmt, ...)
     va_end(args);
 }
 
-size_t Kernel_readLine(char *buffer, size_t buffer_size)
+size_t tryRead(char *buffer, size_t buffer_size)
 {
     RingBuffer* in_buf = &getKernel()->input_buffer;
 
@@ -190,4 +189,20 @@ size_t Kernel_readLine(char *buffer, size_t buffer_size)
     return 0; 
 }
 
+TString Kernel_readLine(void)
+{
+    char input[KEYBOARD_BUFFER_SIZE] = {0};
+    while (tryRead(input, KEYBOARD_BUFFER_SIZE) <= 0) 
+    {
+        bool temp = false; 
+        runBackground(&temp); // still collect inputs;
+    } 
 
+    // remove weird characters and bakcspace 
+    char sanitized[KEYBOARD_BUFFER_SIZE] = {0}; 
+    sanitizeInput(input, sanitized);
+    // convert to heap string
+    TString as_string;
+    TString_initFrom(&as_string, sanitized);
+    return as_string; 
+}

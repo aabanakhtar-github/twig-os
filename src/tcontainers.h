@@ -8,10 +8,10 @@ typedef struct TString
 {
     char* buffer; 
     size_t size; 
-} TString ;
+} TString;
 
 void TString_initFrom(TString* str, const char* value);
-void TString_append(const char c); 
-void TString_destroy(TString* str); 
+void TString_destroy(TString* str);
+
 
 #endif

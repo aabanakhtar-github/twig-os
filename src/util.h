@@ -10,7 +10,8 @@ void halt(void);
 size_t strlen(const char* str);
 int strcmp(const char* a, const char* b);
 void* memset(void* ptr, int x, size_t n_bytes);
-
+char* strtok(char* str, const char* delimeter);
+char* getOlds(void);
 // USEFUL TOOLS
 // expects a buffer of 12 characters at max
 void integerToString(int value, char* str);

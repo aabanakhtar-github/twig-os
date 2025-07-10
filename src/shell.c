@@ -3,21 +3,31 @@
 #include "util.h"
 
 
-bool shellRun(const char* sanitized) 
+bool shellRun(TString* string) 
 {
-    if (strcmp(sanitized, "about") == 0)
+    const char* s = strtok(string->buffer, " ");
+
+    if (strcmp(s, "about") == 0)
     {
         about();
     }
-    else if (strcmp(sanitized, "clear") == 0) 
+    else if (strcmp(s, "clear") == 0) 
     {
         clear();
     }
-    else if (strcmp(sanitized, "reboot") == 0) 
+    else if (strcmp(s, "reboot") == 0) 
     {
         reboot(); 
     }
-    else if (strcmp(sanitized, "") == 0)
+    else if (strcmp(s, "echo") == 0)
+    {
+        echo();
+    }
+    else if (strcmp(s, "echo") == 0)
+    {
+        echo();
+    }
+    else if (strcmp(s, "") == 0) 
     {
     }
     else 
@@ -54,4 +64,17 @@ void reboot(void)
         :
         : "r" (0)      // Invalid IDT pointer
     );   
+}
+
+void echo(void)
+{
+    char* arg = strtok(NULL, "");
+    
+    if (arg == NULL)
+    {
+        Kernel_printF("echo: not enough arguments\n");
+        return; 
+    }
+
+    Kernel_printF("%s\n", arg);
 }

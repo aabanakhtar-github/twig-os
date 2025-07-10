@@ -2,11 +2,13 @@
 #define SHELL_H
 
 #include "stdbool.h"
+#include "tcontainers.h"
 
-bool shellRun(const char* command);
+bool shellRun(TString* command);
 // builtins
 void about(void);
 void clear(void);
 void reboot(void);
+void echo(void);
 
 #endif // SHELL_H

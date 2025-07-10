@@ -1,4 +1,4 @@
-#include "string.h"
+#include "tcontainers.h"
 #include "memory.h"
 #include "util.h"
 
@@ -12,7 +12,7 @@ void TString_initFrom(TString* str, const char* value)
         str->buffer[i] = value[i];
     }
 
-    str->buffer[str->size + 1] = 0; // null term lol 
+    str->buffer[str->size] = 0; // null term lol 
 }
 
 void TString_destroy(TString *str)

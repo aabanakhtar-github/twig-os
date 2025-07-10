@@ -10,7 +10,7 @@
 
 #include "kernel.h"
 #include "util.h"
-#include "string.h"
+#include "tcontainers.h"
 #include "memory.h"
 
 void kmain(void)
@@ -20,8 +20,6 @@ void kmain(void)
     TString_initFrom(&string, "Hello World!"); 
     printMemoryBlocks(); 
     int* a = alloc(4);
-
-    Kernel_printF("%T\n", string);
 
     printMemoryBlocks();
     TString_destroy(&string);

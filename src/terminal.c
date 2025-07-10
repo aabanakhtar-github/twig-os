@@ -157,7 +157,7 @@ void sanitizeInput(const char *original, char *target)
     int j = 0; // target index
     for (int i = 0; i < len; ++i) 
     {
-        if (!isAlpha(original[i]) && original[i] != '\b') 
+        if (!isAlpha(original[i]) && original[i] != ' ' && original[i] != '\b') 
         {
             continue;
         }

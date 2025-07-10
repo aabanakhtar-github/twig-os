@@ -58,6 +58,8 @@ void* memset(void* ptr, int x, size_t n_bytes)
     return (void*)target;
 }
 
+
+
 void integerToString(int value, char* str)
 {
     char* ptr = str;
@@ -98,6 +100,64 @@ void integerToString(int value, char* str)
         *end = temp;
     }
 }
+
+char* strtok(char* str, const char* delimiters) 
+{
+    static char* next = 0;
+
+    if (str)
+        next = str;
+    if (!next)
+        return 0;
+
+    // Skip leading delimiters
+    char* token_start = next;
+    while (*token_start) 
+    {
+        const char* d = delimiters;
+        int is_delim = 0;
+        while (*d) 
+        {
+            if (*token_start == *d++) 
+            {
+                is_delim = 1;
+                break;
+            }
+        }
+        if (!is_delim)
+            break;
+        token_start++;
+    }
+
+    // If we reached the end
+    if (*token_start == '\0') 
+    {
+        next = 0;
+        return 0;
+    }
+
+    // Find the end of the token
+    char* token_end = token_start;
+    while (*token_end) 
+    {
+        const char* d = delimiters;
+        while (*d) 
+        {
+            if (*token_end == *d++) 
+            {
+                *token_end = '\0'; // terminate token
+                next = token_end + 1;
+                return token_start;
+            }
+        }
+        token_end++;
+    }
+
+    // Reached end of string, return last token
+    next = 0;
+    return token_start;
+}
+
 
 void integerToStringHex(int hex_value, char* str)
 {
