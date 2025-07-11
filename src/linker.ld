@@ -36,12 +36,19 @@ SECTIONS
 		*(.bss)
 	}
 	
-	_KERNEL_HEAP_START = ALIGN(8);
-
-	/* Reserve 1 MB heap */
+	/* Reserve 16 MB heap */
 	.heap (NOLOAD) : ALIGN(8)
 	{
-		. = . + 0x01000000; /* Reserve 16 MB */
+		. = ALIGN(8);
+		_KERNEL_HEAP_START = .;
+		. = . + 0x01000000; /* 16 MB */
 	}
 
+	/* Reserve 128 KB RAM disk */
+	.ramdisk (NOLOAD) : ALIGN(8)
+	{
+		. = ALIGN(8);
+		_KERNEL_RAMDISK_START = .;
+		. = . + 0x20000; /* 128 KB */
+	}
 }

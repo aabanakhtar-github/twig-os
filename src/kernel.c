@@ -6,6 +6,7 @@
 #include "util.h"
 #include "shell.h"
 #include "memory.h"
+#include "ramdisk.h"
 
 #define KERNEL_TAG
 
@@ -55,8 +56,7 @@ void initKernel(void)
     kernel.input_buffer.tail = 0; 
 
     initMemory(); /*setup mem blocks*/
-
-    for (int i = 0; i < 10000; ++i) {}
+    initDisk(); /* setup disk */
 
     splashScreen();
 }
@@ -78,9 +78,9 @@ void loopKernel(void)
 
 void splashScreen(void) 
 {
-    Kernel_printF("                                 Twig-OS  v0.1.0                                ");
+    Kernel_printF("                                 Twig-OS  v0.1.0                               ");
     Kernel_printF("               Repository: https://github.com/aabanakhtar/twig-os              ");
-    Kernel_printF("================================================================================");
+    Kernel_printF("===============================================================================");
 }
 
 Kernel *getKernel(void)

@@ -17,7 +17,7 @@ void kmain(void)
 {
     initKernel(); 
     TString string; 
-    TString_initFrom(&string, "Hello World!"); 
+    TString_initFrom(&string, "\nHello World!"); 
     printMemoryBlocks(); 
     int* a = alloc(4);
 
