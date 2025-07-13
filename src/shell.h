@@ -12,6 +12,8 @@ void reboot(void);
 void echo(void);
 void ls(void);
 void touch(void);
+void write(void);
+void cat(void);
 void rm(void);
 
 #endif // SHELL_H

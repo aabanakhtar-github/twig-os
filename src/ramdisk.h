@@ -25,7 +25,8 @@ extern RamFile ramdisk[];
 void initDisk(void);
 
 bool createFile(const char* name); 
-void deleteFile(const char* name);
+bool deleteFile(const char* name);
 RamFile* getFile(const char* name); 
+bool writeToFile(const char* name, const char* data);
 
 #endif // RAMDISK_H

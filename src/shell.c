@@ -39,6 +39,14 @@ bool shellRun(TString* string)
     {
         rm();
     }
+    else if (strcmp(s, "cat") == 0) 
+    {
+        cat();
+    }
+    else if (strcmp(s, "write") == 0) 
+    {
+        write();
+    }
     else if (strcmp(s, "") == 0) 
     {
     }
@@ -111,8 +119,52 @@ void touch(void)
         return;
     }
 
-    createFile(filename);
+    if (!createFile(filename)) 
+    {
+        Kernel_printF("touch: Couldn't create file. no space.\n");
+    }
+
     Kernel_printF("Created file %s\n.", filename);
+}
+
+void write(void)
+{
+    char* filename = strtok(NULL, " "); 
+    char* data = strtok(NULL, "");
+    if (filename == NULL || data == NULL) 
+    {
+        Kernel_printF("write: not enough args.\n");
+    }
+
+    if (!writeToFile(filename, data)) 
+    {
+        Kernel_printF("write: unable to write\n");
+    }
+}
+
+void cat(void)
+{
+    char* filename = strtok(NULL, ""); 
+    if (filename == NULL) 
+    {
+        Kernel_printF("cat: not enough args.\n"); 
+        return;
+    }
+
+    RamFile* file = getFile(filename);
+    if (file == NULL) 
+    {
+        Kernel_printF("cat: file doesn't exist\n");
+        return;
+    }
+
+    // skip pad byte
+    for (size_t i = 1; i < file->size; ++i) 
+    {
+        Kernel_printF("%c", file->data[i]);
+    }
+
+    Kernel_printF("\n");
 }
 
 void rm(void)
@@ -124,6 +176,10 @@ void rm(void)
         return;
     }
 
-    deleteFile(filename);
+    if (!deleteFile(filename)) 
+    {
+        Kernel_printF("rm: could not remove file.\n");
+    }
+
     Kernel_printF("Deleted file: %s\n", filename);
 }
