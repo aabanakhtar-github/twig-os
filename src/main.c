@@ -12,21 +12,17 @@
 #include "util.h"
 #include "tcontainers.h"
 #include "memory.h"
+#include "scheduler.h"
+
+extern void bingr();
 
 void kmain(void)
 {
     initKernel(); 
-    TString string; 
-    TString_initFrom(&string, "\nHello World!"); 
-    printMemoryBlocks(); 
-    int* a = alloc(4);
+    initScheduler(); 
 
-    printMemoryBlocks();
-    TString_destroy(&string);
-    free(a);
-    printMemoryBlocks();
-    loopKernel();
-
+    join(); 
+    
     // hang forever
     halt();
 }

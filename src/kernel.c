@@ -80,7 +80,7 @@ void splashScreen(void)
 {
     Kernel_printF("                                 Twig-OS  v0.1.0                               ");
     Kernel_printF("               Repository: https://github.com/aabanakhtar/twig-os              ");
-    Kernel_printF("===============================================================================");
+    Kernel_printF("===============================================================================\n\n");
 }
 
 Kernel *getKernel(void)

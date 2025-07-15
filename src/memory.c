@@ -56,18 +56,20 @@ void* alloc(size_t n)
         MEMBLOCK_UPDATE(existing_block);
     }
 
-    if ((Byte*)heap_start + bump >= (Byte*)heap_end)
+    Byte* new_base = (Byte*)align_up((uintptr_t)heap_start, 16);
+
+    if (new_base + bump >= (Byte*)heap_end)
     {
         return NULL; // out of space
     }
 
-    MemBlock* block = (MemBlock*)((Byte*)heap_start + bump);
+    MemBlock* block = (MemBlock*)(new_base + bump);
     block->used = true; 
     block->size = n; 
     bump += MEMBLOCK_SIZE; // allocate the header
     bump += n; // take up space
 
-    void* return_addr = (Byte*)block + MEMBLOCK_SIZE;
+    void* return_addr = block + 1; // pointer to the payload
     
     block->next = blocks; 
     blocks = block; 
