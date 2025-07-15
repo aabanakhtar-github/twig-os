@@ -5,7 +5,6 @@
 
 void TString_initFrom(TString* str, const char* value)
 {
-    Kernel_printF("%s\n", value);
     str->size = strlen(value); // include null term
     str->buffer = alloc(str->size + 1); 
     

@@ -25,6 +25,12 @@ bool createFile(const char* name)
 {
     for (size_t i = 0; i < RAMDISK_MAXFILES; ++i) 
     {
+        if (strcmp(name, ramdisk[i].name.buffer) == 0) 
+        {
+            Kernel_printF("Duplicate file name. \n"); 
+            return false;
+        }
+
         if (ramdisk[i].size > 0)
         {
             continue;
@@ -34,7 +40,6 @@ bool createFile(const char* name)
         entry->size = 1;  // pad byte for used status
         entry->permissions = READ | WRITE;
         TString_initFrom(&entry->name, name);
-        Kernel_printF("Teehee.\n");
         return true;
     }
 

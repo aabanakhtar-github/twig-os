@@ -78,9 +78,10 @@ void loopKernel(void)
 
 void splashScreen(void) 
 {
-    Kernel_printF("                                 Twig-OS  v0.1.0                               ");
-    Kernel_printF("               Repository: https://github.com/aabanakhtar/twig-os              ");
+    Kernel_printF("                                 Twig-OS  v0.1.0                              ");
+    Kernel_printF("               Repository: https://github.com/aabanakhtar/twig-os            \n");
     Kernel_printF("===============================================================================\n\n");
+    Kernel_printF("For more info, type in 'help'\n");
 }
 
 Kernel *getKernel(void)

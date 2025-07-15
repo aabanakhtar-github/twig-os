@@ -84,7 +84,7 @@ isr_dispatch:
     call isrHandler
     add esp, 4
 
-    pop eax ; go back to user mode or whatever 
+    pop eax  ; restore descriptor stuff
     mov ds, ax 
     mov es, ax 
     mov fs, ax 
@@ -114,7 +114,7 @@ irq_dispatch:
     call irqHandler
     add esp, 4
 
-    pop eax ; go back to user mode or whatever 
+    pop eax ; restore these descriptors
     mov ds, ax 
     mov es, ax 
     mov fs, ax 

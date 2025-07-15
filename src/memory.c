@@ -21,7 +21,7 @@ void initMemory(void)
 {
     heap_start = (void*)(_KERNEL_HEAP_START);
     heap_end = heap_start + KERNEL_HEAP_SIZE; 
-    blocks = (MemBlock*)heap_start;
+    blocks = (MemBlock*)align_up((uintptr_t)heap_start, 4);
     bump += MEMBLOCK_SIZE; 
     blocks->size = 0; 
     blocks->used = true; 

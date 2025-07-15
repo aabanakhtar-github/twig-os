@@ -2,54 +2,31 @@
 #include "kernel.h"
 #include "util.h"
 #include "ramdisk.h"
+#include "memory.h"
+
+#define COMMAND(name) else if (strcmp(s, #name) == 0) { name(); }
 
 bool shellRun(TString* string) 
 {
     const char* s = strtok(string->buffer, " ");
 
-    if (strcmp(s, "about") == 0)
+    if (strcmp(s, "") == 0) 
     {
-        about();
+        return true;
     }
-    else if (strcmp(s, "clear") == 0) 
-    {
-        clear();
-    }
-    else if (strcmp(s, "reboot") == 0) 
-    {
-        reboot(); 
-    }
-    else if (strcmp(s, "echo") == 0)
-    {
-        echo();
-    }
-    else if (strcmp(s, "echo") == 0)
-    {
-        echo();
-    }
-    else if (strcmp(s, "touch") == 0)
-    {
-        touch();
-    }
-    else if (strcmp(s, "ls") == 0) 
-    {
-        ls();
-    }
-    else if (strcmp(s, "rm") == 0) 
-    {
-        rm();
-    }
-    else if (strcmp(s, "cat") == 0) 
-    {
-        cat();
-    }
-    else if (strcmp(s, "write") == 0) 
-    {
-        write();
-    }
-    else if (strcmp(s, "") == 0) 
-    {
-    }
+
+    if (strcmp(s, "about") == 0)       { about(); }
+    COMMAND(clear)
+    COMMAND(reboot)
+    COMMAND(echo)
+    COMMAND(touch)
+    COMMAND(ls)
+    COMMAND(rm)
+    COMMAND(cat)
+    COMMAND(write)
+    COMMAND(help)
+    COMMAND(meminfo)
+
     else 
     {
         Kernel_printF("Twig: unknown command.\n");
@@ -58,6 +35,9 @@ bool shellRun(TString* string)
 
     return true;
 }
+
+#undef COMMAND
+
 
 void about(void)
 {
@@ -122,6 +102,7 @@ void touch(void)
     if (!createFile(filename)) 
     {
         Kernel_printF("touch: Couldn't create file. no space.\n");
+        return;
     }
 
     Kernel_printF("Created file %s\n.", filename);
@@ -182,4 +163,24 @@ void rm(void)
     }
 
     Kernel_printF("Deleted file: %s\n", filename);
+}
+
+void help(void)
+{
+    Kernel_printF("Available commands:\n");
+    Kernel_printF("  about      - Info about Twig OS\n");
+    Kernel_printF("  clear      - Clear the screen\n");
+    Kernel_printF("  reboot     - Reboot the system (soft reset)\n");
+    Kernel_printF("  echo       - Print text to the screen\n");
+    Kernel_printF("  ls         - List files on the RAM disk\n");
+    Kernel_printF("  cat        - View file contents\n");
+    Kernel_printF("  touch      - Create a new empty file\n");
+    Kernel_printF("  write      - Write data to a file\n");
+    Kernel_printF("  rm         - Delete a file\n");
+    Kernel_printF("  help       - Show this help message\n");
+}
+
+void meminfo()
+{
+    printMemoryBlocks();
 }

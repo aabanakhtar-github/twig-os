@@ -12,17 +12,15 @@
 #include "util.h"
 #include "tcontainers.h"
 #include "memory.h"
-#include "scheduler.h"
 
 extern void bingr();
 
+/* kmain: program starts here*/
 void kmain(void)
 {
     initKernel(); 
-    initScheduler(); 
-
-    join(); 
     
+    loopKernel();
     // hang forever
     halt();
 }
